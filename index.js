@@ -12,8 +12,12 @@ async function sendMessage() {
 
   if (input === "") return;
 
-  chatBox.innerHTML += `<div class="message user"><b>You 🤵:</b> ${input}<div class="time">${getTime()}</div></div>`;
+  chatBox.innerHTML += `<pre class="message user"><pre>You 🤵:</pre> ${input}<div class="time">${getTime()}</div></pre>`;
   inputField.value = "";
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  const loadingId = `loading-${Date.now()}`;
+  chatBox.innerHTML += `<pre id="${loadingId}" class="message bot loading"><pre>Bot 🤖:</pre> Typing...<div class="time">${getTime()}</div></pre>`;
   chatBox.scrollTop = chatBox.scrollHeight;
 
   try {
@@ -39,13 +43,22 @@ but avoid answering unrelated questions. Question: ${input}`;
     const data = await response.json();
     const reply =
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "🤖 Sorry, no reply from Gemini.";
+      "🤖 Sorry, no reply from Chat Bot.";
 
-    chatBox.innerHTML += `<div class="message bot"><b>Bot 🤖:</b> ${reply}<div class="time">${getTime()}</div></div>`;
+    const loadingElement = document.getElementById(loadingId);
+    if (loadingElement) {
+      loadingElement.classList.remove("loading");
+      loadingElement.innerHTML = `<pre>Bot 🤖:</pre> ${reply}<div class="time">${getTime()}</div>`;
+    }
   } catch (error) {
-    chatBox.innerHTML += `<div class="message bot error"><b>Bot 🤖:</b> Error: ${
-      error.message
-    }<div class="time">${getTime()}</div></div>`;
+    const loadingElement = document.getElementById(loadingId);
+    if (loadingElement) {
+      loadingElement.classList.remove("loading");
+      loadingElement.classList.add("error");
+      loadingElement.innerHTML = `<pre>Bot 🤖:</pre> Error: ${
+        error.message
+      }<div class="time">${getTime()}</div>`;
+    }
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 }
