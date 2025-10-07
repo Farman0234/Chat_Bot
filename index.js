@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyCwzQwPUKZ09Ll1tKI299QOvKoMpVzJFQQ"; // ⚠ Replace with your real API key
+const API_KEY = "AIzaSyCwzQwPUKZ09Ll1tKI299QOvKoMpVzJFQQ";
 
 function getTime() {
   const now = new Date();
@@ -22,8 +22,8 @@ async function sendMessage() {
 
   try {
     const prompt = `You are a helpful and friendly programming assistant. 
-You can also respond politely to greetings like "hello", "hi", or "how are you", 
-but avoid answering unrelated questions. Question: ${input}`;
+    You can also respond politely to greetings like "hello", "hi", or "how are you", 
+    but avoid answering unrelated questions. Question: ${input}`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
@@ -55,9 +55,8 @@ but avoid answering unrelated questions. Question: ${input}`;
     if (loadingElement) {
       loadingElement.classList.remove("loading");
       loadingElement.classList.add("error");
-      loadingElement.innerHTML = `<pre>Bot 🤖:</pre> Error: ${
-        error.message
-      }<div class="time">${getTime()}</div>`;
+      loadingElement.innerHTML = `<pre>Bot 🤖:</pre> Error: ${error.message
+        }<div class="time">${getTime()}</div>`;
     }
     chatBox.scrollTop = chatBox.scrollHeight;
   }
